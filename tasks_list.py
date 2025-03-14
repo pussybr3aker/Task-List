@@ -77,8 +77,8 @@ def ask():
     option = input("* Add a new task...............................(1)\n* Delete a task................................(2)\n* Mark a task as completed.....................(3)\n* Mark a task as incompleted...................(4)\n* Show tasks...................................(5)\n* Show incompleted tasks.......................(6)\n* Show completed tasks.........................(7)\n* Save data....................................(8)\n\n-> ")
     while option not in ["1", "2", "3", "4", "5","6","7","8"]:
         clear()
-        print("* Add a new task (1)\n* Delete a task (2)\n* Mark a task as completed (3)\n* Mark a task as incompleted (4)\n* Show tasks (5)")
-        option = input("\n[!] Please choose a valid option.\n\n")
+        print("* Add a new task...............................(1)\n* Delete a task................................(2)\n* Mark a task as completed.....................(3)\n* Mark a task as incompleted...................(4)\n* Show tasks...................................(5)\n* Show incompleted tasks.......................(6)\n* Show completed tasks.........................(7)\n* Save data....................................(8)\n")
+        option = input("[!] Please choose a valid option.\n\n-> ")
     return option
 
 #Update incompleted and completedtasks
@@ -138,13 +138,16 @@ def showCompletedTasks():
         input("[!] You dont have tasks yet.")
 
 #Save data
-def saveData():
-    with open("tasks.json", "w") as f:
-        json.dump(allTask, f)
+def saveData(data):
+    if data:
+        with open("tasks.json", "w") as f:
+            json.dump(data, f)
+            clear()
+            input("[+] Data saved successfully.")
+    else:
         clear()
-        input("[+] Data saved successfully.")
+        input("[!] No data to store.")
 
-    
 #Print menu
 def menu():
     updateTasks()
@@ -159,13 +162,13 @@ def menu():
         taskIncompleted()
     elif option == "5":
         showAllTasks()
-        input
+        input()
     elif option == "6":
         showIncompletedTasks()
     elif option == "7":
         showCompletedTasks()
     elif option == "8":
-        saveData()
+        saveData(allTask)
 
 #Main code
 def  main():
