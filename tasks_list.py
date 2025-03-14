@@ -148,6 +148,16 @@ def saveData(data):
         clear()
         input("[!] No data to store.")
 
+#Load saved data
+def loadData():
+    try:
+        with open("tasks.json", "r") as f:
+            data = json.load(f)
+            return data
+    except FileNotFoundError:
+        input("\n[!] No data found.")
+        return ""
+
 #Print menu
 def menu():
     updateTasks()
@@ -177,5 +187,8 @@ def  main():
         menu()
         clear()
 
-#Code
+#Load data
+allTask = loadData()
+
+#Main loop
 main()
