@@ -1,5 +1,5 @@
 #Libs
-import time; import os
+import time; import os; import json
 
 #Tasks lists
 allTask = {}
@@ -74,8 +74,8 @@ def taskIncompleted():
 #Ask for a option
 def ask():
     clear()
-    option = input("* Add a new task...............................(1)\n* Delete a task................................(2)\n* Mark a task as completed.....................(3)\n* Mark a task as incompleted...................(4)\n* Show tasks...................................(5)\n* Show incompleted tasks.......................(6)\n* Show completed tasks.........................(7)\n\n-> ")
-    while option not in ["1", "2", "3", "4", "5","6","7"]:
+    option = input("* Add a new task...............................(1)\n* Delete a task................................(2)\n* Mark a task as completed.....................(3)\n* Mark a task as incompleted...................(4)\n* Show tasks...................................(5)\n* Show incompleted tasks.......................(6)\n* Show completed tasks.........................(7)\n* Save data....................................(8)\n\n-> ")
+    while option not in ["1", "2", "3", "4", "5","6","7","8"]:
         clear()
         print("* Add a new task (1)\n* Delete a task (2)\n* Mark a task as completed (3)\n* Mark a task as incompleted (4)\n* Show tasks (5)")
         option = input("\n[!] Please choose a valid option.\n\n")
@@ -136,6 +136,14 @@ def showCompletedTasks():
             input("[!] You dont have complete tasks yet.")
     else:
         input("[!] You dont have tasks yet.")
+
+#Save data
+def saveData():
+    with open("tasks.json", "w") as f:
+        json.dump(allTask, f)
+        clear()
+        input("[+] Data saved successfully.")
+
     
 #Print menu
 def menu():
@@ -156,6 +164,8 @@ def menu():
         showIncompletedTasks()
     elif option == "7":
         showCompletedTasks()
+    elif option == "8":
+        saveData()
 
 #Main code
 def  main():
