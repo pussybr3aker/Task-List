@@ -1,5 +1,7 @@
+#Made by Donerkalash
+
 #Libs
-import time; import os; import json
+import time; import os; import json; from colorama import Fore; import curses
 
 #Tasks lists
 allTask = {}
@@ -7,7 +9,7 @@ incompletedTasks = []
 completedTasks = []
 
 #Banner
-banner = """
+banner = Fore.RED + """
                   _        _  _            
    _             | |      | |(_)       _   
  _| |_ _____  ___| |  _   | | _  ___ _| |_ 
@@ -15,7 +17,7 @@ banner = """
   | |_/ ___ |___ |  _ (   | || |___ | | |_ 
    \__)_____(___/|_| \_)   \_)_(___/   \__)
                                            
-"""
+""" + Fore.RESET
 
 #Clear
 def clear():
@@ -25,60 +27,62 @@ def clear():
 # Add a task
 def addTask ():
     clear()
-    newTask = input("What task do you want to add?\n-> ")
+    newTask = input(f"What task do you want to add?\n{Fore.GREEN}-> "+Fore.RESET)
     if newTask in allTask:
-        input(f"\nThe task \"{newTask}\" already exists.")
+        input(f"\n{Fore.YELLOW}[!]{Fore.RESET}The task {Fore.YELLOW+newTask+Fore.RESET} already exists.")
+    elif newTask == "":
+        input(f"{Fore.RED}[!]{Fore.RESET} You can't add an empty task.")
     else:
         allTask[newTask] = "incomplete"
-        input(f"\nTask \"{newTask}\" successfully added.\n")
+        input(f"\n{Fore.GREEN}[+]{Fore.RESET} Task {Fore.GREEN+newTask+Fore.RESET} successfully added.\n")
 
 #Delete a task
 def deleteTask():
     clear()
     if showAllTasks():
-        deletedTask = input("\nWhich task do you want to delete?\n-> ")
+        deletedTask = input(f"\nWhich task do you want to delete?\n{Fore.GREEN}-> "+Fore.RESET)
         if deletedTask not in allTask:
-            input(f"\nThe task \"{deletedTask}\" is not in the task list.")
+            input(f"\nThe task {Fore.YELLOW+deletedTask+Fore.RESET} is not in the task list.")
         else:
-            validation = input("\nAre you sure that you want to delete the task? (y/n)\n-> ")
+            validation = input(f"\n{Fore.YELLOW}[!]{Fore.RESET} Are you sure that you want to delete the task? (y/n)\n{Fore.GREEN}-> "+Fore.RESET)
             if validation == "y":
                 del allTask[deletedTask]
-                input(f"\nThe task \"{deletedTask}\" has been successfully eliminated.")
+                input(f"\n{Fore.GREEN}[+]{Fore.RESET} The task {Fore.GREEN+deletedTask+Fore.RESET} has been successfully eliminated.")
             else:
-                input("\nTask not deleted.")
+                input(f"\n{Fore.RED}[!]{Fore.RESET} Task not deleted.")
 
 #Mark task as completed
 def taskCompleted():
     clear()
     if showAllTasks():
-        taskCompleted = input("\nWhich task do you want to mark as completed?\n-> ")
+        taskCompleted = input(f"\nWhich task do you want to mark as completed?\n{Fore.GREEN}-> "+Fore.RESET)
         if taskCompleted not in allTask:
-            input(f"\nThe task \"{taskCompleted}\" is not in the task list.")
+            input(f"\n{Fore.YELLOW}[!]{Fore.RESET} The task {Fore.YELLOW+taskCompleted+Fore.RESET} is not in the task list.")
         else:
             allTask[taskCompleted] = "completed"
-            input(f"\nThe task \"{taskCompleted}\" has been marked as completed successfully.")
+            input(f"\n{Fore.GREEN}[+]{Fore.RESET} The task {Fore.GREEN+taskCompleted+Fore.RESET} has been marked as completed successfully.")
 
 
 #Mark task as incomplete
 def taskIncompleted():
     clear()
     if showAllTasks():
-        taskIncompleted = input("\nWhich task do you want to mark as incompleted?\n-> ")
+        taskIncompleted = input(f"\nWhich task do you want to mark as incompleted?\n{Fore.GREEN}-> "+Fore.RESET)
         if taskIncompleted not in allTask:
-            input(f"\nThe task \"{taskIncompleted}\" is not in the task list.")
+            input(f"\n{Fore.YELLOW}[!]{Fore.RESET} The task {Fore.YELLOW+taskIncompleted+Fore.RESET} is not in the task list.")
         else:
             allTask[taskIncompleted] = "incomplete"
-            input(f"\nThe task \"{taskIncompleted}\" has been marked as incompleted successfully")
+            input(f"\n{Fore.GREEN}[+]{Fore.RESET} The task {Fore.GREEN+taskIncompleted+Fore.RESET} has been marked as incompleted successfully")
 
 
 #Ask for a option
 def ask():
     clear()
-    option = input("* Add a new task...............................(1)\n* Delete a task................................(2)\n* Mark a task as completed.....................(3)\n* Mark a task as incompleted...................(4)\n* Show tasks...................................(5)\n* Show incompleted tasks.......................(6)\n* Show completed tasks.........................(7)\n* Save data....................................(8)\n\n-> ")
+    option = input(f"{Fore.GREEN}*{Fore.RESET} Add a new task...............................(1)\n{Fore.GREEN}*{Fore.RESET} Delete a task................................(2)\n{Fore.GREEN}*{Fore.RESET} Mark a task as completed.....................(3)\n{Fore.GREEN}*{Fore.RESET} Mark a task as incompleted...................(4)\n{Fore.GREEN}*{Fore.RESET} Show tasks...................................(5)\n{Fore.GREEN}*{Fore.RESET} Show incompleted tasks.......................(6)\n{Fore.GREEN}*{Fore.RESET} Show completed tasks.........................(7)\n{Fore.GREEN}*{Fore.RESET} Save data....................................(8)\n\n-> "+Fore.GREEN)
     while option not in ["1", "2", "3", "4", "5","6","7","8"]:
         clear()
-        print("* Add a new task...............................(1)\n* Delete a task................................(2)\n* Mark a task as completed.....................(3)\n* Mark a task as incompleted...................(4)\n* Show tasks...................................(5)\n* Show incompleted tasks.......................(6)\n* Show completed tasks.........................(7)\n* Save data....................................(8)\n")
-        option = input("[!] Please choose a valid option.\n\n-> ")
+        print(f"{Fore.GREEN}*{Fore.RESET} Add a new task...............................(1)\n{Fore.GREEN}*{Fore.RESET} Delete a task................................(2)\n{Fore.GREEN}*{Fore.RESET} Mark a task as completed.....................(3)\n{Fore.GREEN}*{Fore.RESET} Mark a task as incompleted...................(4)\n{Fore.GREEN}*{Fore.RESET} Show tasks...................................(5)\n{Fore.GREEN}*{Fore.RESET} Show incompleted tasks.......................(6)\n{Fore.GREEN}*{Fore.RESET} Show completed tasks.........................(7)\n{Fore.GREEN}*{Fore.RESET} Save data....................................(8)")
+        option = input(f"\n{Fore.YELLOW}[!]{Fore.RESET} Please choose a valid option.\n\n-> "+Fore.GREEN)
     return option
 
 #Update incompleted and completedtasks
@@ -99,43 +103,33 @@ def showAllTasks():
     if  allTask:
         print("All tasks:")
         for i in allTask:
-            print(f"{i} -> {allTask[i]}")
+            print(f"{Fore.GREEN+"* "+Fore.RESET+i} -> {allTask[i]}")
         return True
     else:
-        input("[!] You dont have tasks yet.")
+        input(f"{Fore.RED}[!]{Fore.RESET} You dont have tasks yet.")
         return False
 
 #Show incompleted tasks
 def showIncompletedTasks():
     clear()
-    if showAllTasks:
-        if incompletedTasks:
-            print("Incompleted tasks:")
-            iteration = 1
-            for task in incompletedTasks:
-                print(f"{iteration}) -> {task}")
-                iteration = iteration + 1
-            input()
-        else:
-            input("[!] You dont have incomplete tasks yet.")
+    if incompletedTasks:
+        print("Incompleted tasks:")
+        for task in incompletedTasks:
+            print(f"{Fore.GREEN}*{Fore.RESET} {task}")
+        input()
     else:
-        input("[!] You dont have tasks yet.")
+        input(f"{Fore.RED}[!]{Fore.RESET} You dont have incomplete tasks yet.")
 
 #Show completed tasks
 def showCompletedTasks():
     clear()
-    if showAllTasks:
-        if completedTasks:
-            print("Completed tasks:")
-            iteration = 1
-            for task in completedTasks:
-                print(f"{iteration}) -> {task}")
-                iteration = iteration + 1
-            input()
-        else:
-            input("[!] You dont have complete tasks yet.")
+    if completedTasks:
+        print("Completed tasks:")
+        for task in completedTasks:
+            print(f"{Fore.GREEN}*{Fore.RESET} {task}")
+        input()
     else:
-        input("[!] You dont have tasks yet.")
+        input(f"{Fore.RED}[!]{Fore.RESET} You dont have complete tasks yet.")
 
 #Save data
 def saveData(data):
@@ -143,20 +137,21 @@ def saveData(data):
         with open("tasks.json", "w") as f:
             json.dump(data, f)
             clear()
-            input("[+] Data saved successfully.")
+            input(f"{Fore.GREEN}[+]{Fore.RESET} Data saved successfully.")
     else:
         clear()
-        input("[!] No data to store.")
+        input(f"{Fore.RED}[!]{Fore.RESET} No data to store.")
 
 #Load saved data
 def loadData():
     try:
         with open("tasks.json", "r") as f:
             data = json.load(f)
-            return data
+            return(loadedData)
     except FileNotFoundError:
-        input("\n[!] No data found.")
-        return ""
+        clear()
+        input(f"\n{Fore.YELLOW}[!]{Fore.RESET} No data found.")
+        return False
 
 #Print menu
 def menu():
@@ -171,8 +166,8 @@ def menu():
     elif option == "4":
         taskIncompleted()
     elif option == "5":
-        showAllTasks()
-        input()
+        if showAllTasks():
+            input()
     elif option == "6":
         showIncompletedTasks()
     elif option == "7":
@@ -188,7 +183,11 @@ def  main():
         clear()
 
 #Load data
-allTask = loadData()
+loadedData = loadData()
+if loadedData:
+    allTask = loadedData
+else:
+    pass
 
 #Main loop
 main()
