@@ -28,7 +28,7 @@ Usage
 
     Clone the repository:
 
-git clone https://github.com/pussybr3aker/task-manager.git
+[git clone https://github.com/pussybr3aker/task-manager.git](https://github.com/pussybr3aker/Task-List)
 cd task-manager
 
 Run the script: To run the task manager, simply execute the task_manager.py file in the terminal:
