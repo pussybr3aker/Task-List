@@ -1,4 +1,4 @@
-#Made by DonnerKalash
+#Made by pussybr3aker
 
 import os; import json
 
