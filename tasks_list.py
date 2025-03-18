@@ -1,3 +1,5 @@
+#Made by DonnerKalash
+
 import os; import json
 
 class task():
@@ -24,60 +26,73 @@ class task_manager():
             os.system("clear")
         print(self.banner)
 
+    def search(self, name):
+        for task in self.task_list:
+            if task.name == name:
+                return task
+        return None
+
     def add_task(self):
         self.clear()
         name = input("[+] Enter task name to add-> ")
         if name == "":
             self.clear()
             input("[!] You cannot add an empty task")
-        for i in self.task_list:
-            if i.name == name:
-                self.clear()
-                input(f"[+] Task {name} already exists.")
-                return
-        self.clear()
-        self.task_list.append(task(name, "incomplete"))
-        input(f"[+] Task {name} successfully.")
-
+        search_result = self.search(name)
+        if search_result is not None:
+            self.clear()
+            input(f"[+] Task {name} already exists.")
+            return False
+        else:
+            self.clear()
+            self.task_list.append(task(name, "incomplete"))
+            input(f"[+] Task {name} successfully.")
+            return True
         
     def delete_task(self):
         self.clear()
         self.show_tasks()
         name = input("\n[+] Enter task name to remove->")
-        for i in self.task_list:
-            if i.name == name:
-                self.task_list.remove(i)
+        search_result = self.search(name)
+        if search_result is not None:
+                self.task_list.remove(search_result)
                 self.clear()
                 input(f"[+] Task {name} successfully deleted.")
-            else:
-                self.clear()
+                return True
+        else:
+            self.clear()
             input(f"[!] Task {name} not exist.")
+            return False
     
     def mark_as_completed(self):
         self.clear()
         self.show_tasks()
         name = input("\n[+] Enter task name to mark as completed-> ")
-        for i in self.task_list:
-            if i.name == name:
-                i.status = "completed"
-                self.clear()
-                input(f"[+] Task {name} marked as completed.")
-                return
-        self.clear()
-        input(f"[!] Task {name} not exist.")
+        search_result = self.search(name)
+        if search_result is not None:
+            search_result.status = "completed"
+            self.clear()
+            input(f"[+] Task {name} marked as completed.")
+            return True
+        else:
+            self.clear()
+            input(f"[!] Task {name} not exist.")
+            return False
 
     def mark_as_incompleted(self):
         self.clear()
         self.show_tasks()
         name = input("\n[+] Enter task name to mark as incompleted-> ")
-        for i in self.task_list:
-            if i.name == name:
-                i.status = "incomplete"
-                self.clear()
-                input(f"[+] Task {name} marked as incompleted.")
+        search_result = self.search(name)
+        if search_result is not None:
+            search_result.status = "incomplete"
+            self.clear()
+            input(f"[+] Task {name} marked as incompleted.")
+            return True
         else:
             self.clear()
             input(f"[!] Task {name} not exist.")
+            return False
     
     def show_tasks(self):
         self.clear()
@@ -102,21 +117,13 @@ class task_manager():
         try:
             with open("task_list.json", "r") as f:
                 tasks = json.load(f)
-                self.task_list = task_list = []
+                self.task_list = []  
                 for task_dict in tasks:
-                    task_list.append(task(task_dict['name'], task_dict['status']))
+                    self.task_list.append(task(task_dict['name'], task_dict['status']))
                 input("[+] Tasks loaded successfully.")
         except FileNotFoundError:
             input("[!] No saved tasks found.")
-    
-    def update_saved_tasks(self):
-        self.clear()
-        for i in self.task_list:
-            task_dict_list = {"name": i.name, "status": i.status}
-        with open("task_list.json", "w") as f:
-            json.dump(task_dict_list, f, indent=4)
-            input("[+] Tasks saved successfully.")
-    
+   
     def main(self, selection):
         self.selection = selection
         self.clear()
